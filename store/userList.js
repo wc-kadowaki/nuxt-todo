@@ -1,12 +1,31 @@
+const initUser = [
+  {
+    name: 'mike',
+    id: 0,
+    editFlag: false,
+  },
+  {
+    name: 'john',
+    id: 1,
+    editFlag: false,
+  },
+  {
+    name: 'leon',
+    id: 2,
+    editFlag: false,
+  },
+  {
+    name: 'bob',
+    id: 3,
+    editFlag: false,
+  },
+];
+
 // state
 export const state = () => ({
-  list: [
-    { name: 'mike', id: 0 },
-    { name: 'john', id: 1 },
-    { name: 'leon', id: 2 },
-    { name: 'bob', id: 3 },
-  ],
+  list: initUser,
   latestId: 0,
+  notUser: '選択しない',
 });
 
 // mutations
@@ -25,11 +44,23 @@ export const mutations = {
       }
     }
   },
+  edit(state, userId) {
+    state.list.forEach((user) => {
+      // 全てのuserの編集のフラグを折る
+      user.editFlag = false;
+      // userのidと引数のuserIdが同じものを探す
+      if (user.id === userId) {
+        // 対象のuserの編集のフラグを立てる
+        user.editFlag = true;
+      }
+    });
+  },
   // ユーザー情報の変更
-  update(state, userId, newUserData) {
+  update(state, { userId, newUserData }) {
     for (let i = 0; i < state.list.length; i++) {
       if (userId === state.list[i].id) {
-        state.list[i] = newUserData;
+        state.list[i].name = newUserData.name;
+        state.list[i].editFlag = false;
       }
     }
   },
